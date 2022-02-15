@@ -15,6 +15,7 @@ public class WordleLogic {
 			e.printStackTrace();
 		}
 		this.wordArray = toArray(words.getWord());
+		//System.out.println(wordArray);
 	}
 	
 	public Boolean isSolved(){
@@ -28,10 +29,21 @@ public class WordleLogic {
 		}
 		return array;
 	}
+
+	private Boolean isPresent(Character letter) {
+			for(int i = 0; i < wordArray.size(); i++){
+				if(wordArray.get(i) == letter) {
+					return true;
+				}
+			}
+		return false;
+	}
 	
-	private void status(String correctLetters, String presentLetters) {
-		System.out.println("Letters on correct positions: " + correctLetters);
-		System.out.println("Letters present in the word: " + presentLetters);
+	private Boolean isCorrect(Character letter, int index) {
+		if(userWordArray.get(index) == wordArray.get(index)) {
+			return true;
+		}
+		return false;
 	}
 	
 	private Boolean isValid(String userWord) {
@@ -46,14 +58,30 @@ public class WordleLogic {
 	
 	public void entry(String userWord) {
 		
+		
 		if(!isValid(userWord)) {
 			return;
 		}
 		
-		userWordArray = toArray(userWord);
+		this.userWordArray = toArray(userWord);
 
-		String correctLetters = "";
-		String presentLetters = "";
+		
+		for(int i = 0; i < wordArray.size(); i++){
+			if(isCorrect(userWordArray.get(i), i)) {
+				System.out.print(Color.GREEN);
+				System.out.print(userWordArray.get(i) + " ");
+				System.out.print(Color.RESET);
+			} else if (isPresent(userWordArray.get(i))) {
+				System.out.print(Color.YELLOW);
+				System.out.print(userWordArray.get(i) + " ");
+				System.out.print(Color.RESET);
+			} else {
+				System.out.print(Color.WHITE);
+				System.out.print(userWordArray.get(i) + " ");
+				System.out.print(Color.RESET);
+			}
+		}
+		System.out.println();
 		
 		if(userWordArray.equals(wordArray)) {
 			solved = true;
@@ -61,17 +89,7 @@ public class WordleLogic {
 			return;
 		}
 		
-		for(int i = 0; i < wordArray.size(); i++){
-			if(wordArray.get(i) == userWordArray.get(i)) {
-				correctLetters += wordArray.get(i);
-			}
-			for(int k = 0; k < wordArray.size(); k++){
-				if(wordArray.get(i) == userWordArray.get(k)) {
-					presentLetters += wordArray.get(i);
-				}
-			}
-		}
-		status(correctLetters, presentLetters);
+		
 	}
 	
 	
